@@ -1,0 +1,15 @@
+{
+  "name": "cisco-ucsm_dockerdc",
+  "version": "0.1.0",
+  "author": "Cisco Systems, Inc",
+  "summary": "Deployment module for Cisco UCSM with Docker Datacenter.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/CiscoUcs",
+  "project_page": "https://github.com/CiscoUcs",
+  "issues_url": "https://github.com/CiscoUcs",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ],
+  "data_provider": null
+}
+
