@@ -42,6 +42,9 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
-class ucsm_dockerdc {
+class ucsm_dockerdc (
+  $login_info=undef,
+) {
 
+    include ::ucsm_dockerdc::profile::ucsm_config
 }
