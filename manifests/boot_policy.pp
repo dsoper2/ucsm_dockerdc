@@ -1,4 +1,4 @@
-class ucsm_dockerdc::create_boot_policy (
+class ucsm_dockerdc::boot_policy (
 $boot_policy_name=undef,
 $boot_device_list=undef,
 ) {
@@ -9,9 +9,9 @@ $boot_device_list=undef,
         $boot_device_list.each |$boot_device| {
 	    notify { "${boot_device['name']}" : }
 	}
-        boot_policy{'policy':
-            confuse => $boot_policy_name,
-            descr => 'testing',
+        boot_policy{'PXE-Local-Boot':
+            policy_name => "${boot_policy_name}",
+            descr => '',
             reboot_on_update => 'no',
             policy_owner => 'local',
             enforce_vnic_name => 'yes',

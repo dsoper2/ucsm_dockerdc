@@ -1,61 +1,51 @@
 ---
 # login information
 ucsm_dockerdc::login_info:
-  ip: 172.22.249.180
+  ip: 172.16.143.139
   username: admin
   password: password
 
 #vlan configuration data
-ucsm_dockerdc::create_vlans::vlan_list:
+ucsm_dockerdc::vlans::vlan_list:
   - name: vlan603
     id: 603
     native: false
   
-  - name: vlan604
-    id: 604
-    native: true
-    
 #mac address pool
-ucsm_dockerdc::create_macs::mac_list:
+ucsm_dockerdc::macs::mac_list:
   - name: Docker
     start: 00:25:B5:00:66:00
     end: 00:25:B5:00:67:F3
 
 #vnic templates
-ucsm_dockerdc::create_vnic_templates::vnic_list:
+ucsm_dockerdc::vnic_templates::vnic_list:
   - name: Docker-eth0
     fabric: A
     vlan_list:
-    - name: vlan603 A
+    - vlan_name: vlan603
       native: false
-
-    - name: vlan604 A
-      native: true
 
     cdn_name: eth0
     mtu: 1500
     mac_pool: Docker
-
-  - name: Docker-eth1
-    fabric: B
-    vlan_list:
-    - name: vlan603 B
-      native: false
-
-    - name: vlan604 B
-      native: true
-
-    cdn_name: eth1
-    mtu: 1500
-    mac_pool: Docker
+#
+#  - name: Docker-eth1
+#    fabric: B
+#    vlan_list:
+#    - vlan_name: vlan603
+#      native: false
+#
+#    cdn_name: eth1
+#    mtu: 1500
+#    mac_pool: Docker
       
 #bios policy
-ucsm_dockerdc::create_bios_policy::bios_policy_name: Docker-BiosPol
-ucsm_dockerdc::create_bios_policy::consistent_device_naming: enabled
+ucsm_dockerdc::bios_policy::bios_policy_name: Docker-BiosPol
+ucsm_dockerdc::bios_policy::consistent_device_naming: enabled
  
 #boot policy
-ucsm_dockerdc::create_boot_policy::boot_policy_name: Docker-LocalBoot
-ucsm_dockerdc::create_boot_policy::boot_device_list:
+ucsm_dockerdc::boot_policy::boot_policy_name: Docker-LocalBoot
+ucsm_dockerdc::boot_policy::boot_device_list:
   - name: LAN
     order: 1
 
