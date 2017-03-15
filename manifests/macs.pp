@@ -6,15 +6,15 @@ $mac_list=undef,
             notify { "${mac['name']}" :
 	        message => "start ${mac['start']} end ${mac['end']}"
             }
-	    ucsm_macpool{'macpoolPool':
+	    ucsm_macpool{ "${mac['name']}" :
 	        policy_name => "${mac['name']}",
-	        descr =>"",
+	        descr =>'',
 	        r_from => "${mac['start']}",
 	        to => "${mac['end']}",
 	        ip => "${ucsm_dockerdc::login_info['ip']}",
 	        username => "${ucsm_dockerdc::login_info['username']}",
 	        password => "${ucsm_dockerdc::login_info['password']}",
-	        state => "present",
+	        state => 'present',
 	    }
         }
     }

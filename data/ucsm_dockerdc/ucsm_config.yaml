@@ -11,6 +11,10 @@ ucsm_dockerdc::vlans::vlan_list:
     id: 603
     native: false
   
+  - name: PXE
+    id: 131
+    native: false
+  
 #mac address pool
 ucsm_dockerdc::macs::mac_list:
   - name: Docker
@@ -25,19 +29,22 @@ ucsm_dockerdc::vnic_templates::vnic_list:
     - vlan_name: vlan603
       native: false
 
+    - vlan_name: PXE
+      native: true
+
     cdn_name: eth0
     mtu: 1500
     mac_pool: Docker
-#
-#  - name: Docker-eth1
-#    fabric: B
-#    vlan_list:
-#    - vlan_name: vlan603
-#      native: false
-#
-#    cdn_name: eth1
-#    mtu: 1500
-#    mac_pool: Docker
+
+  - name: Docker-eth1
+    fabric: B
+    vlan_list:
+    - vlan_name: vlan603
+      native: false
+
+    cdn_name: eth1
+    mtu: 1500
+    mac_pool: Docker
       
 #bios policy
 ucsm_dockerdc::bios_policy::bios_policy_name: Docker-BiosPol
@@ -46,10 +53,11 @@ ucsm_dockerdc::bios_policy::consistent_device_naming: enabled
 #boot policy
 ucsm_dockerdc::boot_policy::boot_policy_name: Docker-LocalBoot
 ucsm_dockerdc::boot_policy::boot_device_list:
-  - name: LAN
+  - type: LAN
+    device_name: eth0
     order: 1
 
-  - name: LocalLUN
+  - type: LocalLUN
+    device_name: Boot-Lun
     order: 2
-    LUN_name: Boot-Lun
  

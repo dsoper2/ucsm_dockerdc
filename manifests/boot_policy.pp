@@ -9,7 +9,7 @@ $boot_device_list=undef,
         $boot_device_list.each |$boot_device| {
 	    notify { "${boot_device['name']}" : }
 	}
-        boot_policy{'PXE-Local-Boot':
+        boot_policy{ "${boot_policy_name}" :
             policy_name => "${boot_policy_name}",
             descr => '',
             reboot_on_update => 'no',
