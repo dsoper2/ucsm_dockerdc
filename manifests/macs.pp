@@ -6,7 +6,7 @@ $mac_list=undef,
             notify { "${mac['name']}" :
 	        message => "start ${mac['start']} end ${mac['end']}"
             }
-	    ucsm_macpool{ "${mac['name']}" :
+	    ucsm_macpool{ "macpoolPool ${mac['name']}" :
 	        policy_name => "${mac['name']}",
 	        descr =>'',
 	        r_from => "${mac['start']}",

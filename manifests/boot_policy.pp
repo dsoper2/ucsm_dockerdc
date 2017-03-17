@@ -7,19 +7,17 @@ $boot_device_list=undef,
             message => "ip ${ucsm_dockerdc::login_info['ip']}, user ${ucsm_dockerdc::login_info['username']}, pass ${ucsm_dockerdc::login_info['password']}",
         }
         $boot_device_list.each |$boot_device| {
-	    notify { "${boot_device['name']}" : }
+	    notify { "${boot_device['device_name']}" : }
+            ucsm_boot_policy{ "${boot_policy_name} ${boot_device['device_name']}" :
+                policy_name => "${boot_policy_name}",
+		device_name => "${boot_device['device_name']}",
+		type => "${boot_device['type']}",
+		order => "${boot_device['order']}",
+                state => 'present',
+                ip => "${ucsm_dockerdc::login_info['ip']}",
+                username => "${ucsm_dockerdc::login_info['username']}",
+                password => "${ucsm_dockerdc::login_info['password']}",
+            }
 	}
-        boot_policy{ "${boot_policy_name}" :
-            policy_name => "${boot_policy_name}",
-            descr => '',
-            reboot_on_update => 'no',
-            policy_owner => 'local',
-            enforce_vnic_name => 'yes',
-            boot_mode => 'legacy',
-            state => 'present',
-            ip => "${ucsm_dockerdc::login_info['ip']}",
-            username => "${ucsm_dockerdc::login_info['username']}",
-            password => "${ucsm_dockerdc::login_info['password']}",
-        }
     }
 }

@@ -6,7 +6,7 @@ $consistent_device_naming=undef
         notify { "${bios_policy_name}" :
 	    message => "dev naming ${consistent_device_naming}",
         }
-        ucsm_bios_policy{ "${bios_policy_name}" :
+        ucsm_bios_policy{ "biosVProfile ${bios_policy_name}" :
             policy_name => "${bios_policy_name}",
             descr =>'',
             consistent_device_naming => "${consistent_device_naming}",

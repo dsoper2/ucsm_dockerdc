@@ -57,7 +57,7 @@ ucsm_dockerdc::boot_policy::boot_device_list:
     device_name: eth0
     order: 1
 
-  - type: LocalLUN
+  - type: LocalLun
     device_name: Boot-Lun
     order: 2
  
