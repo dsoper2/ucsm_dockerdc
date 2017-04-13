@@ -60,4 +60,81 @@ ucsm_dockerdc::boot_policy::boot_device_list:
   - type: LocalLun
     device_name: Boot-Lun
     order: 2
- 
+
+# disk configuration policy
+ucsm_dockerdc::disk_group_policy::disk_group_policy_list:
+  - name: Docker-DG
+    RAID_level: 1
+    disk_slot_list:
+    - slot_number: 1
+      
+    - slot_number: 2
+
+#storage profile
+ucsm_dockerdc::storage_profile::storage_profile_list:
+  - name: Docker-StgProf
+    lun_list:
+    - lun_name: Boot-Lun
+      size: 60GB
+      disk_group_policy: Docker-DG
+
+    - lun_name: Data-Lun
+      size: 200GB
+      disk_group_policy: Docker-DG
+
+#service profile templates
+ucsm_dockerdc::sp_templates::sp_list:
+  - name: Docker-DTR
+    template_type: updating
+    uuid_pool: Docker
+    storage_profile: Docker-StgProf
+    vnic_list:
+    - vnic_name: eth0
+      vnic_template: Docker-eth0
+      vnic_adapter_policy: Linux
+
+    - vnic_name: eth1
+      vnic_template: Docker-eth1
+      vnic_adapter_policy: Linux
+
+    boot_policy: Docker-LocalBoot
+    server_pool: Docker-DTR
+    host_fw_package: 3.1.2c
+    bios_policy: Docker-BiosPol
+
+  - name: Docker-UCP-Ctrl
+    template_type: updating
+    uuid_pool: Docker
+    storage_profile: Docker-StgProf
+    vnic_list:
+    - vnic_name: eth0
+      vnic_template: Docker-eth0
+      vnic_adapter_policy: Linux
+
+    - vnic_name: eth1
+      vnic_template: Docker-eth1
+      vnic_adapter_policy: Linux
+
+    boot_policy: Docker-LocalBoot
+    server_pool: Docker-UCP-Ctrl
+    host_fw_package: 3.1.2c
+    bios_policy: Docker-BiosPol
+
+  - name: Docker-UCP-Node
+    template_type: updating
+    uuid_pool: Docker
+    storage_profile: Docker-StgProf
+    vnic_list:
+    - vnic_name: eth0
+      vnic_template: Docker-eth0
+      vnic_adapter_policy: Linux
+
+    - vnic_name: eth1
+      vnic_template: Docker-eth1
+      vnic_adapter_policy: Linux
+
+    boot_policy: Docker-LocalBoot
+    server_pool: Docker-UCP-Node
+    host_fw_package: 3.1.2c
+    bios_policy: Docker-BiosPol
+  

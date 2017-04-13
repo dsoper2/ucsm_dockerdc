@@ -16,4 +16,7 @@ class ucsm_dockerdc::profile::ucsm_config{
   # Configuring Boot Policy
   include ::ucsm_dockerdc::boot_policy
 
+  # Configuring Storage Profile
+  include ::ucsm_dockerdc::storage_profile
+
 }
