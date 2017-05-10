@@ -1,6 +1,8 @@
 class ucsm_dockerdc::vnic_templates(
 $vnic_list=undef,
 ){
+    include ::ucsm_dockerdc
+
     if ($vnic_list != undef) {
         $vnic_list.each |$vnic| {
             notify { "${vnic['name']}" :

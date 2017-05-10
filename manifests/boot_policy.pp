@@ -2,6 +2,8 @@ class ucsm_dockerdc::boot_policy (
 $boot_policy_name=undef,
 $boot_device_list=undef,
 ) {
+    include ::ucsm_dockerdc
+
     if ($boot_policy_name != undef) {
         notify { "${boot_policy_name}" :
             message => "ip ${ucsm_dockerdc::login_info['ip']}, user ${ucsm_dockerdc::login_info['username']}, pass ${ucsm_dockerdc::login_info['password']}",

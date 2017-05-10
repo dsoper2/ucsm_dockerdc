@@ -9,4 +9,4 @@
 # Learn more about module testing here:
 # https://docs.puppet.com/guides/tests_smoke.html
 #
-include ::ucsm_dockerdc
+include ::ucsm_dockerdc::profile::ucsm_config

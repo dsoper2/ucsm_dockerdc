@@ -1,6 +1,8 @@
 class ucsm_dockerdc::vlans(
 $vlan_list=undef,
 ){
+    include ::ucsm_dockerdc
+
     if ($vlan_list != undef) {
         $vlan_list.each |$vlan| {
             notify { "${vlan['name']}" :

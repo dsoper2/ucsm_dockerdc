@@ -7,8 +7,8 @@ ucsm_dockerdc::login_info:
 
 #vlan configuration data
 ucsm_dockerdc::vlans::vlan_list:
-  - name: vlan603
-    id: 603
+  - name: vlan244
+    id: 244
     native: false
   
   - name: PXE
@@ -26,7 +26,7 @@ ucsm_dockerdc::vnic_templates::vnic_list:
   - name: Docker-eth0
     fabric: A
     vlan_list:
-    - vlan_name: vlan603
+    - vlan_name: vlan244
       native: false
 
     - vlan_name: PXE
@@ -39,7 +39,7 @@ ucsm_dockerdc::vnic_templates::vnic_list:
   - name: Docker-eth1
     fabric: B
     vlan_list:
-    - vlan_name: vlan603
+    - vlan_name: vlan244
       native: false
 
     cdn_name: eth1
@@ -56,10 +56,10 @@ ucsm_dockerdc::boot_policy::boot_device_list:
   - type: LAN
     device_name: eth0
     order: 1
-
-  - type: LocalLun
-    device_name: Boot-Lun
-    order: 2
+#
+#  - type: LocalLun
+#    device_name: Boot-Lun
+#    order: 2
 
 # disk configuration policy
 ucsm_dockerdc::disk_group_policy::disk_group_policy_list:
@@ -70,17 +70,45 @@ ucsm_dockerdc::disk_group_policy::disk_group_policy_list:
       
     - slot_number: 2
 
-#storage profile
-ucsm_dockerdc::storage_profile::storage_profile_list:
-  - name: Docker-StgProf
-    lun_list:
-    - lun_name: Boot-Lun
-      size: 60GB
-      disk_group_policy: Docker-DG
+#server uuid pool
+ucsm_dockerdc::uuids::uuid_list:
+  - name: Docker
+    from: 0000-000000000001
+    size: 500
 
-    - lun_name: Data-Lun
-      size: 200GB
-      disk_group_policy: Docker-DG
+# server pools
+ucsm_dockerdc::server_pools::server_pool_list:
+  - name: Docker-DTR
+    server_list:
+    - slot_id: 5
+      chassis_id: 1
+
+  - name: Docker-Ctrl
+    server_list:
+    - slot_id: 6
+      chassis_id: 1
+
+  - name: Docker-UCP-Node
+    server_list:
+    - slot_id: 7
+      chassis_id: 1
+
+# disk group policy
+ucsm_dockerdc::disk_group_policy:
+  - name: Docker-DG
+    RAID_level: 1
+
+#storage profile
+#ucsm_dockerdc::storage_profile::storage_profile_list:
+#  - name: Docker-StgProf
+#    lun_list:
+#    - lun_name: Boot-Lun
+#      size: 60GB
+#      disk_group_policy: Docker-DG
+#
+#    - lun_name: Data-Lun
+#      size: 200GB
+#      disk_group_policy: Docker-DG
 
 #service profile templates
 ucsm_dockerdc::sp_templates::sp_list:

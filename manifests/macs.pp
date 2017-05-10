@@ -1,6 +1,8 @@
 class ucsm_dockerdc::macs(
 $mac_list=undef,
 ){
+    include ::ucsm_dockerdc
+
     if ($mac_list != undef) {
         $mac_list.each |$mac| {
             notify { "${mac['name']}" :

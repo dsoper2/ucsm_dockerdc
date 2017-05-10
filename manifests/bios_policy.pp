@@ -1,7 +1,9 @@
-class ucsm_dockerdc::bios_policy(
+class ucsm_dockerdc::bios_policy (
 $bios_policy_name=undef,
 $consistent_device_naming=undef
 ){
+    include ::ucsm_dockerdc
+
     if ($bios_policy_name != undef) {
         notify { "${bios_policy_name}" :
 	    message => "dev naming ${consistent_device_naming}",

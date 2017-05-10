@@ -46,5 +46,4 @@ class ucsm_dockerdc (
   $login_info=undef,
 ) {
 
-    include ::ucsm_dockerdc::profile::ucsm_config
 }

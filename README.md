@@ -1,84 +1,108 @@
 # ucsm_dockerdc
-Deployment module for Cisco UCSM with Docker Datacenter
+Deployment module for Cisco UCS Manager with Docker Datacenter
 
 #### Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with ucsm_dockerdc](#setup)
+1. [Installation - The basics of getting started with ucsm_dockerdc](#installation)
     * [What ucsm_dockerdc affects](#what-ucsm_dockerdc-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with ucsm_dockerdc](#beginning-with-ucsm_dockerdc)
 1. [Usage - Configuration options and additional functionality](#usage)
-1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
+1. [Todos - Additional work to complete](#todos)
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
+## Installation
 
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
+1.  Clone the ucsm puppet module into your puppet modules directory.  The modules directory location may vary depending on how puppet is installed.
+    ```
+    cd /etc/puppetlabs/code/environments/production/modules
+    git clone https://github.com/dsoper2/ucsm.git
+    ```
 
-## Setup
+2.  Clone the ucsm Docker DC puppet module into your puppet modules directory.  The modules directory location may vary depending on how puppet is installed.
+    ```
+    cd /etc/puppetlabs/code/environments/production/modules
+    git clone https://github.com/dsoper2/ucsm_dockerdc.git
+    ```
 
-### What ucsm_dockerdc affects **OPTIONAL**
+### What ucsm_dockerdc affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+* Dependencies that ucsm_dockerdc requires.
 
-If there's more that they should know about, though, this is the place to mention:
+ucsm_dockerdc depends on the ucsm puppet module.
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+The ucsm puppet module depends on the UCS Manager Python SDK.  If the UCSM Python SDK is not installed, please see https://github.com/CiscoUcs/ucsmsdk for installation instructions.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+##### Puppet Master Installation and Configuration
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
+A VM running CentOS 7 was chosen to serve as puppet master. On this VM, Puppet Enterprise was installed.
 
-### Beginning with ucsm_dockerdc
+Steps to install Puppet Enterprise on vm/node are as follows.
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
+1. Go to [Puppet Enterprise Product Page](https://puppet.com/download-puppet-enterprise). Sign up and download Puppet Enterprise installer package for your VM/node.
 
+2. After download is complete, run the installer inside the package and follow through the prompts asked during installation.
+
+3. If install is successful, check the status of all pe-puppet services are "active" before proceeding further.  Use the following command to check the status of pe-puppet services.
+    ```
+    systemctl status pe-puppet*
+    ```
+
+4. Set firewall rules to allow the following ports.
+    ```
+    sudo su
+    ufw status
+    ufw enable
+    ufw allow 22
+    ufw allow 8140
+    ufw allow 4433
+    ufw allow 8143
+    ufw allow 8140
+    ufw allow 8081
+    ufw allow 4433
+    ufw status
+    ```
+    
 ## Usage
 
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
+Manifests for ucsm_dockerdc are strucuted to include a site manifest “site.pp”, a roles file “roles.pp”, and a profiles file “profile.pp”.  The roles.pp manifests defines the Cisco UCS Service Profile Templates used in this design, and profile.pp is used to configure UCSM pools and policies used by the Service Profile Templates.
 
-## Reference
+The ucsm_dockerdc setup employs a puppet master and agent/API proxy architecture.  Cisco UCS Manager does not run a puppet agent, so an existing puppet agent under puppet management is designated as an API proxy to communicate with UCS Manager.
 
-Here, include a complete list of your module's classes, types, providers,
-facts, along with the parameters for each. Users refer to this section (thus
-the name "Reference") to find specific details; most users don't read it per
-se.
+# API proxy node setup through Hiera
 
-## Limitations
+1. Create a hiera file with same name as the certificate signed by the API proxy node.  The hiera file must be placed in the hiera lookup path (e.g., /etc/puppetlabs/code/environments/production/hieradata/nodes/<node cert name>.yaml).
 
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
+2. Add the node definition of the API proxy node "/etc/puppetlabs/code/environments/production/manifests/site.pp".
+
+Case 1: Suppose the API certname is "razor".  Add the following lines in site.pp file.
+    ```
+        ...
+           node "razor"{
+             include ucsm_dockerdc::profile::ucsm_config
+           }
+        ...
+    ```
+
+Details of the hieradata which goes in "/etc/puppetlabs/code/environments/production/hieradata/nodes/<certname of node>.yaml" is documented in the CVD Design Document.
+
+Note that "puppet apply", when combined with scheduling and an automated system for pushing manifests, can be used to implement a serverless puppet site.  Example puppet apply commandlines for serverless puppet management:
+
+* puppet apply -e "include ucsm_dockerdc::bios_policy"
+
+Node definitions and external node classifiers (Puppet Enterprise Console) can co-exist.  Puppet merges their data as follows:
+
+Variables from an ENC are set at top scope and can thus be overridden by variables in a node definition.
+Classes from an ENC are declared at node scope, which means they will be affected by any variables set in the node definition.
+Although ENCs and node definitions can work together, we recommend that most users pick one or the other.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+## Todos
 
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+* Support vNIC template modifications (e.g., adding/removing vlans)
