@@ -80,18 +80,18 @@ ucsm_dockerdc::uuids::uuid_list:
 ucsm_dockerdc::server_pools::server_pool_list:
   - name: Docker-DTR
     server_list:
-    - slot_id: 5
-      chassis_id: 1
+    - slot_id: 1
+      chassis_id: 5
 
   - name: Docker-Ctrl
     server_list:
-    - slot_id: 6
-      chassis_id: 1
+    - slot_id: 2
+      chassis_id: 5
 
   - name: Docker-UCP-Node
     server_list:
-    - slot_id: 7
-      chassis_id: 1
+    - slot_id: 3
+      chassis_id: 5
 
 # disk group policy
 ucsm_dockerdc::disk_group_policy:
@@ -99,16 +99,16 @@ ucsm_dockerdc::disk_group_policy:
     RAID_level: 1
 
 #storage profile
-#ucsm_dockerdc::storage_profile::storage_profile_list:
-#  - name: Docker-StgProf
-#    lun_list:
-#    - lun_name: Boot-Lun
-#      size: 60GB
-#      disk_group_policy: Docker-DG
-#
-#    - lun_name: Data-Lun
-#      size: 200GB
-#      disk_group_policy: Docker-DG
+ucsm_dockerdc::storage_profile::storage_profile_list:
+  - name: Docker-StgProf
+    lun_list:
+    - lun_name: Boot-Lun
+      size: 60
+      disk_group_policy: Docker-DG
+
+    - lun_name: Data-Lun
+      size: 200
+      disk_group_policy: Docker-DG
 
 #service profile templates
 ucsm_dockerdc::sp_templates::sp_list:
