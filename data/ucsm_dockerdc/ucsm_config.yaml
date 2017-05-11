@@ -56,10 +56,10 @@ ucsm_dockerdc::boot_policy::boot_device_list:
   - type: LAN
     device_name: eth0
     order: 1
-#
-#  - type: LocalLun
-#    device_name: Boot-Lun
-#    order: 2
+
+  - type: LocalLun
+    device_name: Boot-Lun
+    order: 2
 
 # disk configuration policy
 ucsm_dockerdc::disk_group_policy::disk_group_policy_list:
