@@ -4,7 +4,7 @@ class ucsm_dockerdc::profile::ucsm_config{
   # Configuring VLANs
   include ::ucsm_dockerdc::vlans
 
-  # Configuring LAN Pools
+  # Configuring LAN (MAC) Pools
   include ::ucsm_dockerdc::macs
 
   # Configuring vNIC Templates
@@ -20,7 +20,13 @@ class ucsm_dockerdc::profile::ucsm_config{
   include ::ucsm_dockerdc::uuids
   include ::ucsm_dockerdc::server_pools
 
+  # Configuring Disk Group Policy
+  include ::ucsm_dockerdc::disk_group_policy
+
   # Configuring Storage Profile
   include ::ucsm_dockerdc::storage_profile
+
+  # Creating Service Profile Templates
+  include ::ucsm_dockerdc::service_profile_templates
 
 }
