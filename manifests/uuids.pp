@@ -8,7 +8,7 @@ $uuid_list=undef,
             notify { "UUID ${uuid['name']}" :
 	        message => "from ${uuid['from']}, to ${uuid['to']}"
             }
-            ucsm_uuid_pool{"${uuid['name']}":
+            ucsm_uuid_pool{"UUID ${uuid['name']}":
                 policy_name => "${uuid['name']}",
                 to => "${uuid['to']}",
                 r_from => "${uuid['from']}",
