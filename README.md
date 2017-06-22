@@ -13,19 +13,20 @@ Deployment module for Cisco UCS Manager with Docker Datacenter
 1. [Todos - Additional work to complete](#todos)
 
 ## Description
+ucsm and ucsm_dockerdc Puppet modules can be used with physical UCSM domains on with the UCS Platform Emulator.  Please see https://communities.cisco.com/docs/DOC-74434 for additional information on the Puppet modules for UCS Manager and a hands on lab guide that can be used in the Cisco demo Cloud (dcloud.cisco.com).
 
 ## Installation
 
 1.  Clone the ucsm puppet module into your puppet modules directory.  The modules directory location may vary depending on how puppet is installed.
     ```
     cd /etc/puppetlabs/code/environments/production/modules
-    git clone https://github.com/dsoper2/ucsm.git
+    git clone https://github.com/CiscoUcs/puppet-ucsm ucsm
     ```
 
 2.  Clone the ucsm Docker DC puppet module into your puppet modules directory.  The modules directory location may vary depending on how puppet is installed.
     ```
     cd /etc/puppetlabs/code/environments/production/modules
-    git clone https://github.com/dsoper2/ucsm_dockerdc.git
+    git clone https://github.com/CiscoUcs/puppet-ucsm_dockerdc.git ucsm_dockerdc
     ```
 
 ### What ucsm_dockerdc affects
